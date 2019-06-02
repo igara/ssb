@@ -111,11 +111,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1789522860740611235}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: -623}
+  m_AnchoredPosition: {x: 8.5, y: -779}
   m_SizeDelta: {x: 500, y: 135.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5235935089413836476
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1789522860695079143}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.1618
+  m_Size: 0.1516875
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -726,6 +726,7 @@ RectTransform:
   - {fileID: 6239739992125490215}
   - {fileID: 1378413722607558234}
   - {fileID: 7008169885984709562}
+  - {fileID: 7114784576924233074}
   - {fileID: 7814300207392252183}
   - {fileID: 5526111851069959166}
   - {fileID: 3214074961631348817}
@@ -737,7 +738,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.0000008516807, y: -0.0000072030407}
-  m_SizeDelta: {x: 0, y: 3000}
+  m_SizeDelta: {x: 0, y: 3200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1800855884975682210
 GameObject:
@@ -964,6 +965,89 @@ MonoBehaviour:
 
 
 '
+--- !u!1 &2054856618229350829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7114784576924233074}
+  - component: {fileID: 4525213422844744060}
+  - component: {fileID: 7895563834427939076}
+  m_Layer: 5
+  m_Name: FighterPackBundleFREEText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7114784576924233074
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054856618229350829}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1789522860740611235}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 8.5, y: -641}
+  m_SizeDelta: {x: 500, y: 135.72}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4525213422844744060
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054856618229350829}
+  m_CullTransparentMesh: 0
+--- !u!114 &7895563834427939076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054856618229350829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 5217285ddaa7c418aab1e3eca29bb0f1, type: 3}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Fighter Pack Bundle FREE
+
+    ver 1.0
+
+    https://assetstore.unity.com/packages/3d/animations/fighter-pack-bundle-free-36286'
 --- !u!1 &3685273822042211611
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,11 +1078,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1789522860740611235}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: -907}
+  m_AnchoredPosition: {x: 8.5, y: -1063}
   m_SizeDelta: {x: 500, y: 135.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &574771887342781829
@@ -1149,11 +1233,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1789522860740611235}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: -1241}
+  m_AnchoredPosition: {x: 8.5, y: -1397}
   m_SizeDelta: {x: 500, y: 218}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6968693471669344698
@@ -1392,11 +1476,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1789522860740611235}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: -766}
+  m_AnchoredPosition: {x: 8.5, y: -922}
   m_SizeDelta: {x: 500, y: 135.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5062424712895470889
@@ -1547,11 +1631,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1789522860740611235}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.5, y: -1051}
+  m_AnchoredPosition: {x: 8.5, y: -1207}
   m_SizeDelta: {x: 500, y: 135.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4632767388279298336

@@ -10,6 +10,6 @@ public class InputType
         right,
         left,
         up,
-        down
+        a
     }
 }

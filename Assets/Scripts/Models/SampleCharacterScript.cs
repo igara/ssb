@@ -10,6 +10,7 @@ public class SampleCharacterScript : MonoBehaviour
     private Vector3 position;
     private bool flying = true;
     public bool dead = false;
+    private int damage = 0;
 
     // Use this for initialization
     void Start()
@@ -25,7 +26,12 @@ public class SampleCharacterScript : MonoBehaviour
 
         if (GameSetting.selfUserData.id == userData.id)
         {
-            if (flying == false && Input.GetKeyDown(InputType.KeyType.up.ToString()))
+            if (Input.GetKeyDown(InputType.KeyType.a.ToString()))
+            {
+                DoAttack();
+                GameSetting.selfUserData.inputType = (int)InputType.KeyType.a;
+            }
+            else if (flying == false && Input.GetKeyDown(InputType.KeyType.up.ToString()))
             {
                 DoUp();
                 GameSetting.selfUserData.inputType = (int)InputType.KeyType.up;
@@ -48,7 +54,11 @@ public class SampleCharacterScript : MonoBehaviour
         }
         else
         {
-            if (flying == false && userData.inputType == (int)InputType.KeyType.up)
+            if (userData.inputType == (int)InputType.KeyType.a)
+            {
+                DoAttack();
+            }
+            else if (flying == false && userData.inputType == (int)InputType.KeyType.up)
             {
                 DoUp();
             }
@@ -89,6 +99,11 @@ public class SampleCharacterScript : MonoBehaviour
         position = transform.position;
         position.x -= 0.1f;
         transform.position = position;
+    }
+
+    void DoAttack()
+    {
+        animator.SetInteger("moveType", (int)InputType.KeyType.a);
     }
 
     void OnCollisionStay(Collision collision)

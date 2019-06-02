@@ -12,6 +12,8 @@ public class MenuSceneScript : MonoBehaviour
     [SerializeField]
     GameObject vsGameRawImage;
     [SerializeField]
+    GameObject creditRawImage;
+    [SerializeField]
     UnityEngine.UI.Text descriptionText;
 
     // Start is called before the first frame update
@@ -54,5 +56,20 @@ public class MenuSceneScript : MonoBehaviour
     public void OnMouseDownVsGameRawImage()
     {
         SceneManager.LoadScene("Scenes/StageSampleScene");
+    }
+
+    public void OnMouseEnterCreditRawImage()
+    {
+        descriptionText.text = "クレジット";
+    }
+
+    public void OnMouseExitCreditRawImage()
+    {
+        descriptionText.text = "";
+    }
+
+    public void OnMouseDownCreditRawImage()
+    {
+        SceneManager.LoadScene("Scenes/CreditScene");
     }
 }
