@@ -11,6 +11,7 @@ public class SampleCharacterScript : MonoBehaviour
     private bool flying = true;
     public bool dead = false;
     private int damage = 0;
+    public bool attack = false;
 
     // Use this for initialization
     void Start()
@@ -104,6 +105,14 @@ public class SampleCharacterScript : MonoBehaviour
     void DoAttack()
     {
         animator.SetInteger("moveType", (int)InputType.KeyType.a);
+        attack = true;
+        StartCoroutine(SetAttackFalse());
+    }
+
+    private IEnumerator SetAttackFalse()
+    {
+        yield return new WaitForSeconds(0.5f);
+        attack = false;
     }
 
     void OnCollisionStay(Collision collision)
@@ -116,6 +125,31 @@ public class SampleCharacterScript : MonoBehaviour
         {
             dead = true;
         }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        GameObject targetGameObject = collider.gameObject;
+
+        try
+        {
+            if (targetGameObject.tag == "sample_character_attack")
+            {
+                SampleCharacterRightArmScript targetSampleCharacterRightArmScript = targetGameObject.GetComponent<SampleCharacterRightArmScript>();
+                SampleCharacterScript targetSampleCharacter = targetSampleCharacterRightArmScript.sampleCharacterGameObject.GetComponent<SampleCharacterScript>();
+
+                if (targetSampleCharacter.attack)
+                {
+                    damage += 10;
+                    Debug.Log(damage);
+                }
+            }
+        }
+        catch
+        {
+
+        }
+
     }
 
     public int getCpuInputType()

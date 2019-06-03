@@ -9,6 +9,8 @@ TagManager:
   - wall_left
   - wall_right
   - stage
+  - attack
+  - sample_character_attack
   layers:
   - Default
   - TransparentFX
