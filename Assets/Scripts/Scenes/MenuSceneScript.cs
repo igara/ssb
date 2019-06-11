@@ -55,7 +55,7 @@ public class MenuSceneScript : MonoBehaviour
 
     public void OnMouseDownVsGameRawImage()
     {
-        SceneManager.LoadScene("Scenes/StageSampleScene");
+        SceneManager.LoadScene("Scenes/VSGameMenuScene");
     }
 
     public void OnMouseEnterCreditRawImage()

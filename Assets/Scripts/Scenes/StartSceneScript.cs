@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,11 @@ public class StartSceneScript : MonoBehaviour
     [SerializeField]
     GameObject title2RawImage;
     [SerializeField]
+    UnityEngine.UI.Text tmText;
+    [SerializeField]
     UnityEngine.UI.Button startButton;
+    [SerializeField]
+    UnityEngine.UI.Text copyrightText;
     [SerializeField]
     AudioSource startAudioSource;
 
@@ -22,6 +27,9 @@ public class StartSceneScript : MonoBehaviour
     void Start()
     {
         startButton.onClick.AddListener(OnClickStartButton);
+
+        int year = DateTime.Now.Year;
+        copyrightText.text = $"©{year} syonet.work / Syo Igarashi";
     }
 
     // Update is called once per frame
@@ -39,11 +47,13 @@ public class StartSceneScript : MonoBehaviour
                 {
                     title1RawImageType = 2;
                     title1RawImage.SetActive(false);
+                    tmText.color = new Color(255.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f);
                 }
                 else
                 {
                     title1RawImageType = 1;
                     title1RawImage.SetActive(true);
+                    tmText.color = new Color(255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f);
                 }
             }
         }

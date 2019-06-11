@@ -266,6 +266,7 @@ public class StageSampleSceneScript : MonoBehaviour
                         if (script.dead)
                         {
                             cpuUserDatasDictionary[id].status = (int)UserData.Status.DEAD;
+                            script.userData.status = (int)UserData.Status.DEAD;
                         }
                     }
 

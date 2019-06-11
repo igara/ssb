@@ -25,7 +25,7 @@ public class UserData
 
     public int id = 0;
 
-    public string name = "hoge";
+    public string name = "noname";
 
     public int status = (int)Status.CLOSE;
 
