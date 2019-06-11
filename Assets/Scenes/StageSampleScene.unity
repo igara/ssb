@@ -1064,7 +1064,7 @@ GameObject:
   - component: {fileID: 1880470197}
   m_Layer: 0
   m_Name: RightArm
-  m_TagString: sample_character_attack
+  m_TagString: robot_kyle_character_attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c9da579d72f433bb732b576316e628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sampleCharacterGameObject: {fileID: 886484689}
+  robotKyleCharacterGameObject: {fileID: 886484689}
 --- !u!135 &1880470198
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1163,7 +1163,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100100, guid: 46e409ce3896c45a0a183ea98be7f42c, type: 3}
       propertyPath: m_Name
-      value: SampleCharacter
+      value: RobotKyleCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 100100, guid: 46e409ce3896c45a0a183ea98be7f42c, type: 3}
       propertyPath: m_IsActive

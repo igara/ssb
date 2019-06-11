@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SampleCharacterScript : MonoBehaviour
+public class RobotKyleCharacterScript : MonoBehaviour
 {
     public UserData userData;
     private Animator animator;
@@ -133,12 +133,12 @@ public class SampleCharacterScript : MonoBehaviour
 
         try
         {
-            if (targetGameObject.tag == "sample_character_attack")
+            if (targetGameObject.tag == "robot_kyle_character_attack")
             {
-                SampleCharacterRightArmScript targetSampleCharacterRightArmScript = targetGameObject.GetComponent<SampleCharacterRightArmScript>();
-                SampleCharacterScript targetSampleCharacter = targetSampleCharacterRightArmScript.sampleCharacterGameObject.GetComponent<SampleCharacterScript>();
+                RobotKyleCharacterRightArmScript targetRobotKyleCharacterRightArmScript = targetGameObject.GetComponent<RobotKyleCharacterRightArmScript>();
+                RobotKyleCharacterScript targetRobotKyleCharacter = targetRobotKyleCharacterRightArmScript.robotKyleCharacterGameObject.GetComponent<RobotKyleCharacterScript>();
 
-                if (targetSampleCharacter.attack)
+                if (targetRobotKyleCharacter.attack)
                 {
                     damage += 10;
                     Debug.Log(damage);

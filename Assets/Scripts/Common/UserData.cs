@@ -6,7 +6,7 @@ public class UserData
 {
     public enum CharacterType
     {
-        SampleCharacter
+        RobotKyleCharacter
     }
 
     public enum Status
@@ -33,7 +33,7 @@ public class UserData
 
     public long unixTime = 0;
 
-    public string character = CharacterType.SampleCharacter.ToString();
+    public string character = CharacterType.RobotKyleCharacter.ToString();
 
     public Vector3 position;
 

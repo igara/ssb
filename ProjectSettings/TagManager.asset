@@ -10,7 +10,7 @@ TagManager:
   - wall_right
   - stage
   - attack
-  - sample_character_attack
+  - robot_kyle_character_attack
   layers:
   - Default
   - TransparentFX

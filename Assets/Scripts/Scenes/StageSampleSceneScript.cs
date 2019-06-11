@@ -177,17 +177,17 @@ public class StageSampleSceneScript : MonoBehaviour
                 selfUserGameObject.transform.parent =
                     selectedCharactersGameObject.transform;
 
-                if (GameSetting.selfUserData.character == UserData.CharacterType.SampleCharacter.ToString())
+                if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                 {
-                    SampleCharacterScript script = selfUserGameObject.AddComponent<SampleCharacterScript>();
+                    RobotKyleCharacterScript script = selfUserGameObject.AddComponent<RobotKyleCharacterScript>();
                     script.userData = GameSetting.selfUserData;
                 }
             }
             else
             {
-                if (GameSetting.selfUserData.character == UserData.CharacterType.SampleCharacter.ToString())
+                if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                 {
-                    SampleCharacterScript script = selfUserGameObject.GetComponent<SampleCharacterScript>();
+                    RobotKyleCharacterScript script = selfUserGameObject.GetComponent<RobotKyleCharacterScript>();
                     if (script.dead)
                     {
                         GameSetting.selfUserData.status = (int)UserData.Status.DEAD;
@@ -248,9 +248,9 @@ public class StageSampleSceneScript : MonoBehaviour
 
                 // Stage GameObject下のキャラクター一覧にまとめる
                 cpuUserGameObject.transform.parent = selectedCharactersGameObject.transform;
-                if (cpuUserData.character == UserData.CharacterType.SampleCharacter.ToString())
+                if (cpuUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                 {
-                    SampleCharacterScript script = cpuUserGameObject.AddComponent<SampleCharacterScript>();
+                    RobotKyleCharacterScript script = cpuUserGameObject.AddComponent<RobotKyleCharacterScript>();
                     script.userData = cpuUserData;
                 }
             }
@@ -258,9 +258,9 @@ public class StageSampleSceneScript : MonoBehaviour
             {
                 if (cpuUserData.status == (int)UserData.Status.BATTLE)
                 {
-                    if (cpuUserData.character == UserData.CharacterType.SampleCharacter.ToString())
+                    if (cpuUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                     {
-                        SampleCharacterScript script = cpuUserGameObject.GetComponent<SampleCharacterScript>();
+                        RobotKyleCharacterScript script = cpuUserGameObject.GetComponent<RobotKyleCharacterScript>();
                         cpuUserData.inputType = script.getCpuInputType();
                         script.userData = cpuUserData;
                         if (script.dead)
@@ -302,9 +302,9 @@ public class StageSampleSceneScript : MonoBehaviour
 
                 // Stage GameObject下のキャラクター一覧にまとめる
                 userGameObject.transform.parent = selectedCharactersGameObject.transform;
-                if (userData.character == UserData.CharacterType.SampleCharacter.ToString())
+                if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                 {
-                    SampleCharacterScript script = userGameObject.AddComponent<SampleCharacterScript>();
+                    RobotKyleCharacterScript script = userGameObject.AddComponent<RobotKyleCharacterScript>();
                     script.userData = userData;
                 }
             }
@@ -312,9 +312,9 @@ public class StageSampleSceneScript : MonoBehaviour
             {
                 if (userData.status == (int)UserData.Status.BATTLE)
                 {
-                    if (userData.character == UserData.CharacterType.SampleCharacter.ToString())
+                    if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                     {
-                        SampleCharacterScript script = userGameObject.GetComponent<SampleCharacterScript>();
+                        RobotKyleCharacterScript script = userGameObject.GetComponent<RobotKyleCharacterScript>();
                         script.userData = userData;
                     }
                     userGameObject.transform.position = userData.position;

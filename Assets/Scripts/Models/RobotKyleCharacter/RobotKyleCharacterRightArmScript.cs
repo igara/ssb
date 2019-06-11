@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SampleCharacterRightArmScript : MonoBehaviour
+public class RobotKyleCharacterRightArmScript : MonoBehaviour
 {
     [SerializeField]
     public
-    GameObject sampleCharacterGameObject;
+    GameObject robotKyleCharacterGameObject;
 
     // Start is called before the first frame update
     void Start()
