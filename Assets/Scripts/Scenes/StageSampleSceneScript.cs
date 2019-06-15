@@ -39,7 +39,7 @@ public class StageSampleSceneScript : MonoBehaviour
         // Add OnOpen event listener
         ws.onOpen += (object sender, EventArgs e) =>
         {
-            GameSetting.selfUserData.status = (int)UserData.Status.OPEN;
+            GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.OPEN;
             GameSetting.selfUserData.playerType = (int)UserData.PlayerType.MAN;
             GameSetting.selfUserData.unixTime = TimeUtil.GetUnixTime(DateTime.Now);
             GameSetting.selfUserData.position =
@@ -53,7 +53,7 @@ public class StageSampleSceneScript : MonoBehaviour
             for (int i = 0; i < GameSetting.cpuUserDatas.Length; i++)
             {
                 GameSetting.cpuUserDatas[i].name = "CPU";
-                GameSetting.cpuUserDatas[i].status = (int)UserData.Status.OPEN;
+                GameSetting.cpuUserDatas[i].webSocketStatus = (int)UserData.WebSocketStatus.OPEN;
                 GameSetting.cpuUserDatas[i].playerType = (int)UserData.PlayerType.CPU;
                 GameSetting.cpuUserDatas[i].unixTime = TimeUtil.GetUnixTime(DateTime.Now);
                 GameSetting.cpuUserDatas[i].position =
@@ -80,7 +80,7 @@ public class StageSampleSceneScript : MonoBehaviour
                 )
                 {
                     GameSetting.cpuUserDatas[i] = userData;
-                    GameSetting.cpuUserDatas[i].status = (int)UserData.Status.BATTLE;
+                    GameSetting.cpuUserDatas[i].webSocketStatus = (int)UserData.WebSocketStatus.BATTLE;
                     if (cpuUserDatasDictionary.ContainsKey(userData.id))
                     {
                         // すでにCPUが存在するとき
@@ -88,7 +88,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     }
                     else
                     {
-                        if (GameSetting.selfUserData.status == (int)UserData.Status.DEAD || GameSetting.selfUserData.status == (int)UserData.Status.CLOSE)
+                        if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD || GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
                         {
 
                         }
@@ -106,10 +106,10 @@ public class StageSampleSceneScript : MonoBehaviour
                 GameSetting.selfUserData.unixTime == userData.unixTime
             )
             {
-                if (GameSetting.selfUserData.status == (int)UserData.Status.OPEN)
+                if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.OPEN)
                 {
                     GameSetting.selfUserData = userData;
-                    GameSetting.selfUserData.status = (int)UserData.Status.BATTLE;
+                    GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.BATTLE;
                 }
             }
             else
@@ -123,7 +123,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     }
                     else
                     {
-                        if (userData.status == (int)UserData.Status.DEAD || userData.status == (int)UserData.Status.CLOSE)
+                        if (userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD || userData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
                         {
 
                         }
@@ -146,7 +146,7 @@ public class StageSampleSceneScript : MonoBehaviour
         // Add OnClose event listener
         ws.onClose += (object sender, CloseEventArgs e) =>
         {
-            GameSetting.selfUserData.status = (int)UserData.Status.CLOSE;
+            GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.CLOSE;
             string selfUserDataJsonString =
                 JsonUtility.ToJson(GameSetting.selfUserData);
             ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
@@ -190,11 +190,11 @@ public class StageSampleSceneScript : MonoBehaviour
                     RobotKyleCharacterScript script = selfUserGameObject.GetComponent<RobotKyleCharacterScript>();
                     if (script.dead)
                     {
-                        GameSetting.selfUserData.status = (int)UserData.Status.DEAD;
+                        GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
                     }
                 }
 
-                if (GameSetting.selfUserData.status == (int)UserData.Status.DEAD)
+                if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
                     gameOverRawImageGameObject.SetActive(true);
                 }
@@ -206,13 +206,19 @@ public class StageSampleSceneScript : MonoBehaviour
 
                 GameSetting.selfUserData.position = selfUserGameObject.transform.position;
                 GameSetting.selfUserData.rotation = selfUserGameObject.transform.rotation;
+                // selfUserGameObject.transform.rotation = Quaternion.Euler(
+                //     0,
+                //     GameSetting.selfUserData.rotation.y,
+                //     0
+                // );
+                Debug.Log(GameSetting.selfUserData.rotation);
             }
 
             string selfUserDataJsonString =
                 JsonUtility.ToJson(GameSetting.selfUserData);
             ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
 
-            if (GameSetting.selfUserData.status == (int)UserData.Status.DEAD)
+            if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
             {
                 Destroy(selfUserGameObject);
             }
@@ -225,9 +231,9 @@ public class StageSampleSceneScript : MonoBehaviour
             UserData cpuUserData = cpuUserDatasDictionary[id];
             string cpuUserGameObjectName = $"{cpuUserData.id}_{cpuUserData.name}";
             GameObject cpuUserGameObject = GameObject.Find(cpuUserGameObjectName);
-            if (GameSetting.selfUserData.status == (int)UserData.Status.DEAD)
+            if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
             {
-                cpuUserDatasDictionary[id].status = (int)UserData.Status.DEAD;
+                cpuUserDatasDictionary[id].webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
                 string cpuUserDataJsonString =
                     JsonUtility.ToJson(cpuUserDatasDictionary[id]);
                 ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
@@ -236,7 +242,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     Destroy(cpuUserGameObject);
                 }
             }
-            else if (cpuUserGameObject == null && cpuUserData.status != (int)UserData.Status.DEAD)
+            else if (cpuUserGameObject == null && cpuUserData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
                 GameObject characterGameObject =
                     GameObject.Find(cpuUserData.character);
@@ -256,7 +262,7 @@ public class StageSampleSceneScript : MonoBehaviour
             }
             else
             {
-                if (cpuUserData.status == (int)UserData.Status.BATTLE)
+                if (cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
                 {
                     if (cpuUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                     {
@@ -265,8 +271,8 @@ public class StageSampleSceneScript : MonoBehaviour
                         script.userData = cpuUserData;
                         if (script.dead)
                         {
-                            cpuUserDatasDictionary[id].status = (int)UserData.Status.DEAD;
-                            script.userData.status = (int)UserData.Status.DEAD;
+                            cpuUserDatasDictionary[id].webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                            script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
                         }
                     }
 
@@ -290,7 +296,7 @@ public class StageSampleSceneScript : MonoBehaviour
             UserData userData = userDatasDictionary[id];
             string userGameObjectName = $"{userData.id}_{userData.name}";
             GameObject userGameObject = GameObject.Find(userGameObjectName);
-            if (userGameObject == null && userData.status != (int)UserData.Status.DEAD)
+            if (userGameObject == null && userData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
                 GameObject characterGameObject =
                     GameObject.Find(userData.character);
@@ -310,7 +316,7 @@ public class StageSampleSceneScript : MonoBehaviour
             }
             else
             {
-                if (userData.status == (int)UserData.Status.BATTLE)
+                if (userData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
                 {
                     if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                     {
@@ -321,7 +327,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     userGameObject.transform.rotation = userData.rotation;
                 }
 
-                if (userData.status == (int)UserData.Status.DEAD)
+                if (userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
                     userDatasDictionary.Remove(id);
                     Destroy(userGameObject);

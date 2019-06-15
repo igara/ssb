@@ -9,7 +9,7 @@ public class UserData
         RobotKyleCharacter
     }
 
-    public enum Status
+    public enum WebSocketStatus
     {
         OPEN,
         BATTLE,
@@ -27,7 +27,7 @@ public class UserData
 
     public string name = "noname";
 
-    public int status = (int)Status.CLOSE;
+    public int webSocketStatus = (int)WebSocketStatus.CLOSE;
 
     public int playerType;
 
