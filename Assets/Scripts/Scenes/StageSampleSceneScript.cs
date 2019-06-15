@@ -206,12 +206,22 @@ public class StageSampleSceneScript : MonoBehaviour
 
                 GameSetting.selfUserData.position = selfUserGameObject.transform.position;
                 GameSetting.selfUserData.rotation = selfUserGameObject.transform.rotation;
-                // selfUserGameObject.transform.rotation = Quaternion.Euler(
-                //     0,
-                //     GameSetting.selfUserData.rotation.y,
-                //     0
-                // );
-                Debug.Log(GameSetting.selfUserData.rotation);
+                if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
+                {
+                    selfUserGameObject.transform.rotation = Quaternion.Euler(
+                        0,
+                        (int)UserData.RotationStatus.RIGHT,
+                        0
+                    );
+                }
+                else if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+                {
+                    selfUserGameObject.transform.rotation = Quaternion.Euler(
+                        0,
+                        (int)UserData.RotationStatus.LEFT,
+                        0
+                    );
+                }
             }
 
             string selfUserDataJsonString =
@@ -282,6 +292,23 @@ public class StageSampleSceneScript : MonoBehaviour
                             defaultCharacterGameObject.transform.position.z);
                     cpuUserDatasDictionary[id].position = cpuUserGameObject.transform.position;
                     cpuUserDatasDictionary[id].rotation = cpuUserGameObject.transform.rotation;
+
+                    if (cpuUserDatasDictionary[id].rotationStatus == (int)UserData.RotationStatus.RIGHT)
+                    {
+                        cpuUserGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.RIGHT,
+                            0
+                        );
+                    }
+                    else if (cpuUserDatasDictionary[id].rotationStatus == (int)UserData.RotationStatus.LEFT)
+                    {
+                        cpuUserGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.LEFT,
+                            0
+                        );
+                    }
                     string cpuUserDataJsonString =
                         JsonUtility.ToJson(cpuUserDatasDictionary[id]);
                     ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
@@ -325,6 +352,23 @@ public class StageSampleSceneScript : MonoBehaviour
                     }
                     userGameObject.transform.position = userData.position;
                     userGameObject.transform.rotation = userData.rotation;
+
+                    if (userData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
+                    {
+                        userGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.RIGHT,
+                            0
+                        );
+                    }
+                    else if (userData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+                    {
+                        userGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.LEFT,
+                            0
+                        );
+                    }
                 }
 
                 if (userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)

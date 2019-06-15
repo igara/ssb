@@ -87,19 +87,21 @@ public class RobotKyleCharacterScript : MonoBehaviour
     void DoRight()
     {
         animator.SetInteger("moveType", (int)InputType.KeyType.right);
-        transform.rotation = Quaternion.Euler(0, 90, 0);
+        transform.rotation = Quaternion.Euler(0, (int)UserData.RotationStatus.RIGHT, 0);
         position = transform.position;
         position.x += 0.1f;
         transform.position = position;
+        userData.rotationStatus = (int)UserData.RotationStatus.RIGHT;
     }
 
     void DoLeft()
     {
         animator.SetInteger("moveType", (int)InputType.KeyType.left);
-        transform.rotation = Quaternion.Euler(0, 270, 0);
+        transform.rotation = Quaternion.Euler(0, (int)UserData.RotationStatus.LEFT, 0);
         position = transform.position;
         position.x -= 0.1f;
         transform.position = position;
+        userData.rotationStatus = (int)UserData.RotationStatus.LEFT;
     }
 
     void DoAttack()

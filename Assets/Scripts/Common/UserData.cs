@@ -17,6 +17,12 @@ public class UserData
         CLOSE
     }
 
+    public enum RotationStatus
+    {
+        RIGHT = 90,
+        LEFT = 270
+    }
+
     public enum PlayerType
     {
         MAN,
@@ -28,6 +34,8 @@ public class UserData
     public string name = "noname";
 
     public int webSocketStatus = (int)WebSocketStatus.CLOSE;
+
+    public int rotationStatus = (int)RotationStatus.RIGHT;
 
     public int playerType;
 
