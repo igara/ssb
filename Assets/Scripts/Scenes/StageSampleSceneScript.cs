@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityWebSocket;
 
 public class StageSampleSceneScript : MonoBehaviour
@@ -161,27 +162,17 @@ public class StageSampleSceneScript : MonoBehaviour
     {
         if (GameSetting.selfUserData != null && GameSetting.selfUserData.id > 0)
         {
+            if (Input.GetKeyDown("r") && GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+            {
+                SceneManager.LoadScene("Scenes/VSGameMenuScene");
+            }
+
             string selfUserGameObjectName = $"{GameSetting.selfUserData.id}_{GameSetting.selfUserData.name}";
 
             if (GameObject.Find(selfUserGameObjectName) == null)
             {
-                GameObject characterGameObject =
-                    GameObject.Find(GameSetting.selfUserData.character);
-                selfUserGameObject =
-                    Instantiate(characterGameObject,
-                    GameSetting.selfUserData.position,
-                    GameSetting.selfUserData.rotation);
-                selfUserGameObject.name = selfUserGameObjectName;
-
-                // Stage GameObject下のキャラクター一覧にまとめる
-                selfUserGameObject.transform.parent =
-                    selectedCharactersGameObject.transform;
-
-                if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                {
-                    RobotKyleCharacterScript script = selfUserGameObject.AddComponent<RobotKyleCharacterScript>();
-                    script.userData = GameSetting.selfUserData;
-                }
+                // キャラクターのGameObjectを作成
+                selfUserGameObject = getUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
             }
             else
             {
@@ -254,21 +245,8 @@ public class StageSampleSceneScript : MonoBehaviour
             }
             else if (cpuUserGameObject == null && cpuUserData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
-                GameObject characterGameObject =
-                    GameObject.Find(cpuUserData.character);
-                cpuUserGameObject =
-                    Instantiate(characterGameObject,
-                    cpuUserData.position,
-                    cpuUserData.rotation);
-                cpuUserGameObject.name = cpuUserGameObjectName;
-
-                // Stage GameObject下のキャラクター一覧にまとめる
-                cpuUserGameObject.transform.parent = selectedCharactersGameObject.transform;
-                if (cpuUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                {
-                    RobotKyleCharacterScript script = cpuUserGameObject.AddComponent<RobotKyleCharacterScript>();
-                    script.userData = cpuUserData;
-                }
+                // キャラクターのGameObjectを作成
+                cpuUserGameObject = getUserCharacterGameObject(cpuUserGameObject, cpuUserData, cpuUserGameObjectName);
             }
             else
             {
@@ -325,21 +303,8 @@ public class StageSampleSceneScript : MonoBehaviour
             GameObject userGameObject = GameObject.Find(userGameObjectName);
             if (userGameObject == null && userData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
-                GameObject characterGameObject =
-                    GameObject.Find(userData.character);
-                userGameObject =
-                    Instantiate(characterGameObject,
-                    userData.position,
-                    userData.rotation);
-                userGameObject.name = userGameObjectName;
-
-                // Stage GameObject下のキャラクター一覧にまとめる
-                userGameObject.transform.parent = selectedCharactersGameObject.transform;
-                if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                {
-                    RobotKyleCharacterScript script = userGameObject.AddComponent<RobotKyleCharacterScript>();
-                    script.userData = userData;
-                }
+                // キャラクターのGameObjectを作成
+                userGameObject = getUserCharacterGameObject(userGameObject, userData, userGameObjectName);
             }
             else
             {
@@ -378,5 +343,25 @@ public class StageSampleSceneScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    GameObject getUserCharacterGameObject(GameObject userGameObject, UserData userData, string userGameObjectName)
+    {
+        GameObject characterGameObject =
+            GameObject.Find(userData.character);
+        userGameObject =
+            Instantiate(characterGameObject,
+            userData.position,
+            userData.rotation);
+        userGameObject.name = userGameObjectName;
+
+        // Stage GameObject下のキャラクター一覧にまとめる
+        userGameObject.transform.parent = selectedCharactersGameObject.transform;
+        if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
+        {
+            RobotKyleCharacterScript script = userGameObject.AddComponent<RobotKyleCharacterScript>();
+            script.userData = userData;
+        }
+        return userGameObject;
     }
 }
