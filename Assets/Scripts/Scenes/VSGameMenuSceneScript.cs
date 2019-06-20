@@ -11,6 +11,8 @@ public class VSGameMenuSceneScript : MonoBehaviour
     [SerializeField]
     GameObject backTappedRawImage;
     [SerializeField]
+    UnityEngine.UI.InputField userNameInputField;
+    [SerializeField]
     UnityEngine.UI.Text userNameInputFieldText;
 
     [SerializeField]
@@ -38,9 +40,13 @@ public class VSGameMenuSceneScript : MonoBehaviour
     IconRawImageScript cpu2IconRawImageScript;
     IconRawImageScript cpu3IconRawImageScript;
 
+    [SerializeField]
+    GameObject startText;
+
     // Start is called before the first frame update
     void Start()
     {
+        userNameInputField.text = GameSetting.selfUserData.name;
         playerCharacterRawImage.gameObject.SetActive(false);
         cpu1CharacterRawImage.gameObject.SetActive(false);
         cpu2CharacterRawImage.gameObject.SetActive(false);
@@ -49,6 +55,7 @@ public class VSGameMenuSceneScript : MonoBehaviour
         cpu1IconRawImageScript = cpu1IconRawImage.GetComponent<IconRawImageScript>();
         cpu2IconRawImageScript = cpu2IconRawImage.GetComponent<IconRawImageScript>();
         cpu3IconRawImageScript = cpu3IconRawImage.GetComponent<IconRawImageScript>();
+        startText.SetActive(false);
     }
 
     // Update is called once per frame
@@ -107,10 +114,12 @@ public class VSGameMenuSceneScript : MonoBehaviour
         {
             playerCharacterRawImage.gameObject.SetActive(true);
             playerCharacterRawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
+            startText.SetActive(true);
         }
         else
         {
             playerCharacterRawImage.gameObject.SetActive(false);
+            startText.SetActive(false);
         }
     }
 

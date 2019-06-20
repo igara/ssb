@@ -26,6 +26,7 @@ public class StageSampleSceneScript : MonoBehaviour
     private Dictionary<int, UserData> cpuUserDatasDictionary;
 
     private WebSocket ws;
+    private long unixTime;
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +37,14 @@ public class StageSampleSceneScript : MonoBehaviour
         ws = new WebSocket(GameSetting.webSoketServerUri);
         userDatasDictionary = new Dictionary<int, UserData>();
         cpuUserDatasDictionary = new Dictionary<int, UserData>();
+        unixTime = TimeUtil.GetUnixTime(DateTime.Now);
 
         // Add OnOpen event listener
         ws.onOpen += (object sender, EventArgs e) =>
         {
             GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.OPEN;
             GameSetting.selfUserData.playerType = (int)UserData.PlayerType.MAN;
-            GameSetting.selfUserData.unixTime = TimeUtil.GetUnixTime(DateTime.Now);
+            GameSetting.selfUserData.unixTime = unixTime;
             GameSetting.selfUserData.position =
                 defaultCharacterGameObject.transform.position;
             GameSetting.selfUserData.rotation =
@@ -147,10 +149,10 @@ public class StageSampleSceneScript : MonoBehaviour
         // Add OnClose event listener
         ws.onClose += (object sender, CloseEventArgs e) =>
         {
-            GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.CLOSE;
-            string selfUserDataJsonString =
-                JsonUtility.ToJson(GameSetting.selfUserData);
-            ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
+            // GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.CLOSE;
+            // string selfUserDataJsonString =
+            //     JsonUtility.ToJson(GameSetting.selfUserData);
+            // ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
         };
 
         // Connect to the server
@@ -160,68 +162,72 @@ public class StageSampleSceneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameSetting.selfUserData != null && GameSetting.selfUserData.id > 0)
+        if (GameSetting.selfUserData != null && GameSetting.selfUserData.id > 0 && GameSetting.selfUserData.unixTime == unixTime)
         {
             if (Input.GetKeyDown("r") && GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
             {
+                ws.Close();
                 SceneManager.LoadScene("Scenes/VSGameMenuScene");
+                return;
             }
-
-            string selfUserGameObjectName = $"{GameSetting.selfUserData.id}_{GameSetting.selfUserData.name}";
-
-            if (GameObject.Find(selfUserGameObjectName) == null)
+            else if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
             {
-                // キャラクターのGameObjectを作成
-                selfUserGameObject = getUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
-            }
-            else
-            {
-                if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
+                string selfUserGameObjectName = $"{GameSetting.selfUserData.id}_{GameSetting.selfUserData.name}";
+
+                if (GameObject.Find(selfUserGameObjectName) == null)
                 {
-                    RobotKyleCharacterScript script = selfUserGameObject.GetComponent<RobotKyleCharacterScript>();
-                    if (script.dead)
+                    // キャラクターのGameObjectを作成
+                    selfUserGameObject = getUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
+                }
+                else
+                {
+                    if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
                     {
-                        GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                        RobotKyleCharacterScript script = selfUserGameObject.GetComponent<RobotKyleCharacterScript>();
+                        if (script.dead)
+                        {
+                            GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                        }
+                    }
+
+                    if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+                    {
+                        gameOverRawImageGameObject.SetActive(true);
+                    }
+
+                    selfUserGameObject.transform.position =
+                        new Vector3(selfUserGameObject.transform.position.x,
+                            selfUserGameObject.transform.position.y,
+                            defaultCharacterGameObject.transform.position.z);
+
+                    GameSetting.selfUserData.position = selfUserGameObject.transform.position;
+                    GameSetting.selfUserData.rotation = selfUserGameObject.transform.rotation;
+                    if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
+                    {
+                        selfUserGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.RIGHT,
+                            0
+                        );
+                    }
+                    else if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+                    {
+                        selfUserGameObject.transform.rotation = Quaternion.Euler(
+                            0,
+                            (int)UserData.RotationStatus.LEFT,
+                            0
+                        );
                     }
                 }
 
+                string selfUserDataJsonString =
+                    JsonUtility.ToJson(GameSetting.selfUserData);
+                ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
+
                 if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
-                    gameOverRawImageGameObject.SetActive(true);
+                    Destroy(selfUserGameObject);
                 }
-
-                selfUserGameObject.transform.position =
-                    new Vector3(selfUserGameObject.transform.position.x,
-                        selfUserGameObject.transform.position.y,
-                        defaultCharacterGameObject.transform.position.z);
-
-                GameSetting.selfUserData.position = selfUserGameObject.transform.position;
-                GameSetting.selfUserData.rotation = selfUserGameObject.transform.rotation;
-                if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
-                {
-                    selfUserGameObject.transform.rotation = Quaternion.Euler(
-                        0,
-                        (int)UserData.RotationStatus.RIGHT,
-                        0
-                    );
-                }
-                else if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.LEFT)
-                {
-                    selfUserGameObject.transform.rotation = Quaternion.Euler(
-                        0,
-                        (int)UserData.RotationStatus.LEFT,
-                        0
-                    );
-                }
-            }
-
-            string selfUserDataJsonString =
-                JsonUtility.ToJson(GameSetting.selfUserData);
-            ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
-
-            if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
-            {
-                Destroy(selfUserGameObject);
             }
         }
 
