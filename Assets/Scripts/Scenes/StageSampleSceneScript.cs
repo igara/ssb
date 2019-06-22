@@ -89,17 +89,17 @@ public class StageSampleSceneScript : MonoBehaviour
                         // すでにCPUが存在するとき
                         cpuUserDatasDictionary[userData.id] = userData;
                     }
+                    else if (
+                        GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                        GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD ||
+                        GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
+                    {
+
+                    }
                     else
                     {
-                        if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD || GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
-                        {
-
-                        }
-                        else
-                        {
-                            // CPUが存在しないとき
-                            cpuUserDatasDictionary.Add(userData.id, userData);
-                        }
+                        // CPUが存在しないとき
+                        cpuUserDatasDictionary.Add(userData.id, userData);
                     }
                 }
             }
@@ -124,17 +124,17 @@ public class StageSampleSceneScript : MonoBehaviour
                         // すでにユーザが存在するとき
                         userDatasDictionary[userData.id] = userData;
                     }
+                    else if (
+                        userData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                        userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD ||
+                        userData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
+                    {
+
+                    }
                     else
                     {
-                        if (userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD || userData.webSocketStatus == (int)UserData.WebSocketStatus.CLOSE)
-                        {
-
-                        }
-                        else
-                        {
-                            // ユーザが存在しないとき
-                            userDatasDictionary.Add(userData.id, userData);
-                        }
+                        // ユーザが存在しないとき
+                        userDatasDictionary.Add(userData.id, userData);
                     }
                 }
             }
@@ -177,46 +177,17 @@ public class StageSampleSceneScript : MonoBehaviour
                 if (GameObject.Find(selfUserGameObjectName) == null)
                 {
                     // キャラクターのGameObjectを作成
-                    selfUserGameObject = getUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
+                    selfUserGameObject = CreateUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
                 }
                 else
                 {
-                    if (GameSetting.selfUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                    {
-                        RobotKyleCharacterScript script = selfUserGameObject.GetComponent<RobotKyleCharacterScript>();
-                        if (script.dead)
-                        {
-                            GameSetting.selfUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
-                        }
-                    }
+                    UpdateUserData(selfUserGameObject, GameSetting.selfUserData);
 
-                    if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+                    if (
+                        GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                        GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                     {
                         gameOverRawImageGameObject.SetActive(true);
-                    }
-
-                    selfUserGameObject.transform.position =
-                        new Vector3(selfUserGameObject.transform.position.x,
-                            selfUserGameObject.transform.position.y,
-                            defaultCharacterGameObject.transform.position.z);
-
-                    GameSetting.selfUserData.position = selfUserGameObject.transform.position;
-                    GameSetting.selfUserData.rotation = selfUserGameObject.transform.rotation;
-                    if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
-                    {
-                        selfUserGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.RIGHT,
-                            0
-                        );
-                    }
-                    else if (GameSetting.selfUserData.rotationStatus == (int)UserData.RotationStatus.LEFT)
-                    {
-                        selfUserGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.LEFT,
-                            0
-                        );
                     }
                 }
 
@@ -224,7 +195,9 @@ public class StageSampleSceneScript : MonoBehaviour
                     JsonUtility.ToJson(GameSetting.selfUserData);
                 ws.Send(Encoding.UTF8.GetBytes(selfUserDataJsonString));
 
-                if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+                if (
+                    GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                    GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
                     Destroy(selfUserGameObject);
                 }
@@ -238,7 +211,9 @@ public class StageSampleSceneScript : MonoBehaviour
             UserData cpuUserData = cpuUserDatasDictionary[id];
             string cpuUserGameObjectName = $"{cpuUserData.id}_{cpuUserData.name}";
             GameObject cpuUserGameObject = GameObject.Find(cpuUserGameObjectName);
-            if (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+            if (
+                GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
             {
                 cpuUserDatasDictionary[id].webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
                 string cpuUserDataJsonString =
@@ -252,47 +227,14 @@ public class StageSampleSceneScript : MonoBehaviour
             else if (cpuUserGameObject == null && cpuUserData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
                 // キャラクターのGameObjectを作成
-                cpuUserGameObject = getUserCharacterGameObject(cpuUserGameObject, cpuUserData, cpuUserGameObjectName);
+                cpuUserGameObject = CreateUserCharacterGameObject(cpuUserGameObject, cpuUserData, cpuUserGameObjectName);
             }
             else
             {
                 if (cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
                 {
-                    if (cpuUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                    {
-                        RobotKyleCharacterScript script = cpuUserGameObject.GetComponent<RobotKyleCharacterScript>();
-                        cpuUserData.inputType = script.getCpuInputType();
-                        script.userData = cpuUserData;
-                        if (script.dead)
-                        {
-                            cpuUserDatasDictionary[id].webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
-                            script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
-                        }
-                    }
+                    UpdateUserData(cpuUserGameObject, cpuUserDatasDictionary[id]);
 
-                    cpuUserGameObject.transform.position =
-                        new Vector3(cpuUserGameObject.transform.position.x,
-                            cpuUserGameObject.transform.position.y,
-                            defaultCharacterGameObject.transform.position.z);
-                    cpuUserDatasDictionary[id].position = cpuUserGameObject.transform.position;
-                    cpuUserDatasDictionary[id].rotation = cpuUserGameObject.transform.rotation;
-
-                    if (cpuUserDatasDictionary[id].rotationStatus == (int)UserData.RotationStatus.RIGHT)
-                    {
-                        cpuUserGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.RIGHT,
-                            0
-                        );
-                    }
-                    else if (cpuUserDatasDictionary[id].rotationStatus == (int)UserData.RotationStatus.LEFT)
-                    {
-                        cpuUserGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.LEFT,
-                            0
-                        );
-                    }
                     string cpuUserDataJsonString =
                         JsonUtility.ToJson(cpuUserDatasDictionary[id]);
                     ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
@@ -307,42 +249,26 @@ public class StageSampleSceneScript : MonoBehaviour
             UserData userData = userDatasDictionary[id];
             string userGameObjectName = $"{userData.id}_{userData.name}";
             GameObject userGameObject = GameObject.Find(userGameObjectName);
-            if (userGameObject == null && userData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
+            if (
+                userGameObject == null &&
+                (
+                    userData.webSocketStatus != (int)UserData.WebSocketStatus.DIE ||
+                    userData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
+                )
             {
                 // キャラクターのGameObjectを作成
-                userGameObject = getUserCharacterGameObject(userGameObject, userData, userGameObjectName);
+                userGameObject = CreateUserCharacterGameObject(userGameObject, userData, userGameObjectName);
             }
             else
             {
                 if (userData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
                 {
-                    if (userData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
-                    {
-                        RobotKyleCharacterScript script = userGameObject.GetComponent<RobotKyleCharacterScript>();
-                        script.userData = userData;
-                    }
-                    userGameObject.transform.position = userData.position;
-                    userGameObject.transform.rotation = userData.rotation;
-
-                    if (userData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
-                    {
-                        userGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.RIGHT,
-                            0
-                        );
-                    }
-                    else if (userData.rotationStatus == (int)UserData.RotationStatus.LEFT)
-                    {
-                        userGameObject.transform.rotation = Quaternion.Euler(
-                            0,
-                            (int)UserData.RotationStatus.LEFT,
-                            0
-                        );
-                    }
+                    UpdateUserData(userGameObject, userData);
                 }
 
-                if (userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+                if (
+                    userData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                    userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
                     userDatasDictionary.Remove(id);
                     Destroy(userGameObject);
@@ -351,7 +277,7 @@ public class StageSampleSceneScript : MonoBehaviour
         }
     }
 
-    GameObject getUserCharacterGameObject(GameObject userGameObject, UserData userData, string userGameObjectName)
+    GameObject CreateUserCharacterGameObject(GameObject userGameObject, UserData userData, string userGameObjectName)
     {
         GameObject characterGameObject =
             GameObject.Find(userData.character);
@@ -369,5 +295,53 @@ public class StageSampleSceneScript : MonoBehaviour
             script.userData = userData;
         }
         return userGameObject;
+    }
+
+    void UpdateUserData(GameObject userGameObject, UserData savedUserData)
+    {
+        if (savedUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
+        {
+            RobotKyleCharacterScript script = userGameObject.GetComponent<RobotKyleCharacterScript>();
+            if (savedUserData.playerType == (int)UserData.PlayerType.CPU)
+            {
+                savedUserData.inputType = script.GetCpuInputType();
+            }
+            script.userData = savedUserData;
+            if (script.dead && savedUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
+            {
+                savedUserData.webSocketStatus = (int)UserData.WebSocketStatus.DIE;
+                script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DIE;
+            }
+            else if (script.dead && savedUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE)
+            {
+                savedUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+            }
+        }
+
+        userGameObject.transform.position = new Vector3(
+            userGameObject.transform.position.x,
+            userGameObject.transform.position.y,
+            defaultCharacterGameObject.transform.position.z
+        );
+        savedUserData.position = userGameObject.transform.position;
+        savedUserData.rotation = userGameObject.transform.rotation;
+
+        if (savedUserData.rotationStatus == (int)UserData.RotationStatus.RIGHT)
+        {
+            userGameObject.transform.rotation = Quaternion.Euler(
+                0,
+                (int)UserData.RotationStatus.RIGHT,
+                0
+            );
+        }
+        else if (savedUserData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+        {
+            userGameObject.transform.rotation = Quaternion.Euler(
+                0,
+                (int)UserData.RotationStatus.LEFT,
+                0
+            );
+        }
     }
 }

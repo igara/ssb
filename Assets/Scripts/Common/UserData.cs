@@ -13,6 +13,7 @@ public class UserData
     {
         OPEN,
         BATTLE,
+        DIE,
         DEAD,
         CLOSE
     }
