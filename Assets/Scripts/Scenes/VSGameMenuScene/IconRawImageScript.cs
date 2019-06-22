@@ -14,10 +14,7 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
-    }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
         var raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raycastResults);
 
@@ -33,5 +30,9 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
                 selectedCharacter = "";
             }
         }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
     }
 }

@@ -26,6 +26,14 @@ public class VSGameMenuSceneScript : MonoBehaviour
     UnityEngine.UI.RawImage cpu2CharacterRawImage;
     [SerializeField]
     UnityEngine.UI.RawImage cpu3CharacterRawImage;
+    [SerializeField]
+    UnityEngine.UI.Text playerCharacterNameText;
+    [SerializeField]
+    UnityEngine.UI.Text cpu1CharacterNameText;
+    [SerializeField]
+    UnityEngine.UI.Text cpu2CharacterNameText;
+    [SerializeField]
+    UnityEngine.UI.Text cpu3CharacterNameText;
 
     [SerializeField]
     GameObject playerIconRawImage;
@@ -55,6 +63,10 @@ public class VSGameMenuSceneScript : MonoBehaviour
         cpu1IconRawImageScript = cpu1IconRawImage.GetComponent<IconRawImageScript>();
         cpu2IconRawImageScript = cpu2IconRawImage.GetComponent<IconRawImageScript>();
         cpu3IconRawImageScript = cpu3IconRawImage.GetComponent<IconRawImageScript>();
+        playerCharacterNameText.gameObject.SetActive(false);
+        cpu1CharacterNameText.gameObject.SetActive(false);
+        cpu2CharacterNameText.gameObject.SetActive(false);
+        cpu3CharacterNameText.gameObject.SetActive(false);
         startText.SetActive(false);
     }
 
@@ -108,57 +120,51 @@ public class VSGameMenuSceneScript : MonoBehaviour
         SceneManager.LoadScene("Scenes/MenuScene");
     }
 
+    public void OnDragPlayerIconRawImage()
+    {
+        ChangeCharacter(playerIconRawImageScript.selectedCharacter, playerCharacterRawImage, playerCharacterNameText);
+    }
+
     public void OnEndDragPlayerIconRawImage()
     {
-        if (playerIconRawImageScript.selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
+        if (playerIconRawImageScript.selectedCharacter != "")
         {
-            playerCharacterRawImage.gameObject.SetActive(true);
-            playerCharacterRawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
             startText.SetActive(true);
         }
         else
         {
-            playerCharacterRawImage.gameObject.SetActive(false);
             startText.SetActive(false);
         }
     }
 
-    public void OnEndDragCpu1IconRawImage()
+    public void OnDragCpu1IconRawImage()
     {
-        if (cpu1IconRawImageScript.selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
-        {
-            cpu1CharacterRawImage.gameObject.SetActive(true);
-            cpu1CharacterRawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
-        }
-        else
-        {
-            cpu1CharacterRawImage.gameObject.SetActive(false);
-        }
+        ChangeCharacter(cpu1IconRawImageScript.selectedCharacter, cpu1CharacterRawImage, cpu1CharacterNameText);
     }
 
-    public void OnEndDragCpu2IconRawImage()
+    public void OnDragCpu2IconRawImage()
     {
-        if (cpu2IconRawImageScript.selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
-        {
-            cpu2CharacterRawImage.gameObject.SetActive(true);
-            cpu2CharacterRawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
-        }
-        else
-        {
-            cpu2CharacterRawImage.gameObject.SetActive(false);
-        }
+        ChangeCharacter(cpu2IconRawImageScript.selectedCharacter, cpu2CharacterRawImage, cpu2CharacterNameText);
     }
 
-    public void OnEndDragCpu3IconRawImage()
+    public void OnDragCpu3IconRawImage()
     {
-        if (cpu3IconRawImageScript.selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
+        ChangeCharacter(cpu3IconRawImageScript.selectedCharacter, cpu3CharacterRawImage, cpu3CharacterNameText);
+    }
+
+    private void ChangeCharacter(string selectedCharacter, UnityEngine.UI.RawImage rawImage, UnityEngine.UI.Text text)
+    {
+        if (selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
         {
-            cpu3CharacterRawImage.gameObject.SetActive(true);
-            cpu3CharacterRawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
+            rawImage.gameObject.SetActive(true);
+            rawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
+            text.gameObject.SetActive(true);
+            text.text = "Robot Kyle";
         }
         else
         {
-            cpu3CharacterRawImage.gameObject.SetActive(false);
+            rawImage.gameObject.SetActive(false);
+            text.gameObject.SetActive(false);
         }
     }
 }
