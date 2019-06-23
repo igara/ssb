@@ -164,7 +164,7 @@ public class StageSampleSceneScript : MonoBehaviour
     {
         if (GameSetting.selfUserData != null && GameSetting.selfUserData.id > 0 && GameSetting.selfUserData.unixTime == unixTime)
         {
-            if (Input.GetKeyDown("r") && GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+            if (Input.GetKeyDown("r") && (GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD || GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE))
             {
                 ws.Close();
                 SceneManager.LoadScene("Scenes/VSGameMenuScene");
