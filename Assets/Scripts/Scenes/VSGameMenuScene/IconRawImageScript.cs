@@ -25,6 +25,11 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
                 selectedCharacter = UserData.CharacterType.RobotKyleCharacter.ToString();
                 break;
             }
+            else if (hit.gameObject.name == "UnityChanCharacterThumbnailRawImage")
+            {
+                selectedCharacter = UserData.CharacterType.UnityChanCharacter.ToString();
+                break;
+            }
             else
             {
                 selectedCharacter = "";

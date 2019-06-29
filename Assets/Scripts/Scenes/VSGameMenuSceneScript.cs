@@ -17,6 +17,8 @@ public class VSGameMenuSceneScript : MonoBehaviour
 
     [SerializeField]
     UnityEngine.UI.RawImage robotKyleCharacterThumbnailRawImage;
+    [SerializeField]
+    UnityEngine.UI.RawImage unityChanCharacterThumbnailRawImage;
 
     [SerializeField]
     UnityEngine.UI.RawImage playerCharacterRawImage;
@@ -160,6 +162,13 @@ public class VSGameMenuSceneScript : MonoBehaviour
             rawImage.texture = robotKyleCharacterThumbnailRawImage.texture;
             text.gameObject.SetActive(true);
             text.text = "Robot Kyle";
+        }
+        else if (selectedCharacter == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            rawImage.gameObject.SetActive(true);
+            rawImage.texture = unityChanCharacterThumbnailRawImage.texture;
+            text.gameObject.SetActive(true);
+            text.text = "Unity Chan";
         }
         else
         {

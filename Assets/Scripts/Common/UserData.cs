@@ -6,7 +6,8 @@ public class UserData
 {
     public enum CharacterType
     {
-        RobotKyleCharacter
+        RobotKyleCharacter,
+        UnityChanCharacter
     }
 
     public enum WebSocketStatus

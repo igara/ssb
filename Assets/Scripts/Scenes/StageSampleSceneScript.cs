@@ -294,6 +294,11 @@ public class StageSampleSceneScript : MonoBehaviour
             RobotKyleCharacterScript script = userGameObject.AddComponent<RobotKyleCharacterScript>();
             script.userData = userData;
         }
+        if (userData.character == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            UnityChanCharacterScript script = userGameObject.AddComponent<UnityChanCharacterScript>();
+            script.userData = userData;
+        }
         return userGameObject;
     }
 
@@ -302,6 +307,26 @@ public class StageSampleSceneScript : MonoBehaviour
         if (savedUserData.character == UserData.CharacterType.RobotKyleCharacter.ToString())
         {
             RobotKyleCharacterScript script = userGameObject.GetComponent<RobotKyleCharacterScript>();
+            if (savedUserData.playerType == (int)UserData.PlayerType.CPU)
+            {
+                savedUserData.inputType = script.GetCpuInputType();
+            }
+            script.userData = savedUserData;
+            if (script.dead && savedUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
+            {
+                savedUserData.webSocketStatus = (int)UserData.WebSocketStatus.DIE;
+                script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DIE;
+            }
+            else if (script.dead && savedUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE)
+            {
+                savedUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                script.userData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+            }
+        }
+
+        if (savedUserData.character == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            UnityChanCharacterScript script = userGameObject.GetComponent<UnityChanCharacterScript>();
             if (savedUserData.playerType == (int)UserData.PlayerType.CPU)
             {
                 savedUserData.inputType = script.GetCpuInputType();
