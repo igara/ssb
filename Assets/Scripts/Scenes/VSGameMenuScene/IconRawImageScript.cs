@@ -44,7 +44,9 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         if (selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
         {
-
+            AudioClip audioClip = Resources.Load("Sounds/RobotKyle/RobotKyle") as AudioClip;
+            selectCharacterAudioSource.clip = audioClip;
+            selectCharacterAudioSource.Play();
         }
         else if (selectedCharacter == UserData.CharacterType.UnityChanCharacter.ToString())
         {

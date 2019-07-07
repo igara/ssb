@@ -11,6 +11,7 @@ TagManager:
   - stage
   - attack
   - robot_kyle_character_attack
+  - unity_chan_character_attack
   layers:
   - Default
   - TransparentFX
