@@ -160,12 +160,49 @@ public class UnityChanCharacterScript : MonoBehaviour
             if (targetGameObject.tag == "robot_kyle_character_attack")
             {
                 RobotKyleCharacterRightArmScript targetRobotKyleCharacterRightArmScript = targetGameObject.GetComponent<RobotKyleCharacterRightArmScript>();
-                RobotKyleCharacterScript targetRobotKyleCharacter = targetRobotKyleCharacterRightArmScript.robotKyleCharacterGameObject.GetComponent<RobotKyleCharacterScript>();
+                RobotKyleCharacterScript targetRobotKyleCharacterScript = targetRobotKyleCharacterRightArmScript.robotKyleCharacterGameObject.GetComponent<RobotKyleCharacterScript>();
 
-                if (targetRobotKyleCharacter.attack)
+                if (targetRobotKyleCharacterScript.attack)
                 {
                     damage += 10;
-                    Debug.Log(damage);
+
+                    Vector3 targetVector = new Vector3(targetGameObject.transform.position.x, 0, targetGameObject.transform.position.z);
+                    Vector3 selfVector = new Vector3(position.x, 0, position.z);
+                    Vector3 diffVector = Vector3.Normalize(selfVector - targetVector);
+                    if (targetRobotKyleCharacterScript.userData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+                    {
+                        diffVector = diffVector + new Vector3(-0.1f * damage, 0, 0);
+                    }
+                    else
+                    {
+                        diffVector = diffVector + new Vector3(0.1f * damage, 0, 0);
+                    }
+
+                    rigidBody.AddForce(diffVector * damage, ForceMode.Impulse);
+                }
+            }
+            if (targetGameObject.tag == "unity_chan_character_attack")
+            {
+                UnityChanCharacterRightArmScript targetUnityChanCharacterRightArmScript = targetGameObject.GetComponent<UnityChanCharacterRightArmScript>();
+                UnityChanCharacterScript targetUnityChanCharacterScript = targetUnityChanCharacterRightArmScript.unityChanCharacterGameObject.GetComponent<UnityChanCharacterScript>();
+
+                if (targetUnityChanCharacterScript.attack)
+                {
+                    damage += 5;
+
+                    Vector3 targetVector = new Vector3(targetGameObject.transform.position.x, 0, targetGameObject.transform.position.z);
+                    Vector3 selfVector = new Vector3(position.x, 0, position.z);
+                    Vector3 diffVector = Vector3.Normalize(selfVector - targetVector);
+                    if (targetUnityChanCharacterScript.userData.rotationStatus == (int)UserData.RotationStatus.LEFT)
+                    {
+                        diffVector = diffVector + new Vector3(-0.1f * damage, 0, 0);
+                    }
+                    else
+                    {
+                        diffVector = diffVector + new Vector3(0.1f * damage, 0, 0);
+                    }
+
+                    rigidBody.AddForce(diffVector * damage, ForceMode.Impulse);
                 }
             }
         }
