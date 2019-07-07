@@ -7,6 +7,7 @@ public class UnityChanCharacterScript : MonoBehaviour
     public UserData userData;
     private Animator animator;
     private Rigidbody rigidBody;
+    private AudioSource audioSource;
     private Vector3 position;
     private bool flying = true;
     public bool dead = false;
@@ -18,6 +19,7 @@ public class UnityChanCharacterScript : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -114,7 +116,24 @@ public class UnityChanCharacterScript : MonoBehaviour
     private IEnumerator SetAttackFalse()
     {
         yield return new WaitForSeconds(0.5f);
+        AudioClip audioClip = Resources.Load("Sounds/UnityChan/UnityChan0045") as AudioClip;
+        audioSource.clip = audioClip;
+        audioSource.Play();
         attack = false;
+    }
+
+    public void DoOpenMessage()
+    {
+        AudioClip audioClip = Resources.Load("Sounds/UnityChan/Create0015") as AudioClip;
+        audioSource.clip = audioClip;
+        audioSource.Play();
+    }
+
+    public void DoDeadMessage()
+    {
+        AudioClip audioClip = Resources.Load("Sounds/UnityChan/Dead1095") as AudioClip;
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
     void OnCollisionStay(Collision collision)

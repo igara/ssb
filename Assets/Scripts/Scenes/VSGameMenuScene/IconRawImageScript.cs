@@ -7,6 +7,9 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
     public string selectedCharacter = "";
 
+    [SerializeField]
+    AudioSource selectCharacterAudioSource;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
     }
@@ -39,5 +42,15 @@ public class IconRawImageScript : MonoBehaviour, IBeginDragHandler, IDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (selectedCharacter == UserData.CharacterType.RobotKyleCharacter.ToString())
+        {
+
+        }
+        else if (selectedCharacter == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            AudioClip audioClip = Resources.Load("Sounds/UnityChan/UnityChan0045") as AudioClip;
+            selectCharacterAudioSource.clip = audioClip;
+            selectCharacterAudioSource.Play();
+        }
     }
 }

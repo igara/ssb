@@ -178,6 +178,7 @@ public class StageSampleSceneScript : MonoBehaviour
                 {
                     // キャラクターのGameObjectを作成
                     selfUserGameObject = CreateUserCharacterGameObject(selfUserGameObject, GameSetting.selfUserData, selfUserGameObjectName);
+                    StartCoroutine(WaitCreateGameObject(selfUserGameObject, GameSetting.selfUserData));
                 }
                 else
                 {
@@ -199,7 +200,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
                     GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
-                    Destroy(selfUserGameObject);
+                    StartCoroutine(WaitDestroyGameObject(selfUserGameObject, GameSetting.selfUserData));
                 }
             }
         }
@@ -221,13 +222,14 @@ public class StageSampleSceneScript : MonoBehaviour
                 ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
                 if (cpuUserGameObject)
                 {
-                    Destroy(cpuUserGameObject);
+                    StartCoroutine(WaitDestroyGameObject(cpuUserGameObject, cpuUserDatasDictionary[id]));
                 }
             }
             else if (cpuUserGameObject == null && cpuUserData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
             {
                 // キャラクターのGameObjectを作成
                 cpuUserGameObject = CreateUserCharacterGameObject(cpuUserGameObject, cpuUserData, cpuUserGameObjectName);
+                StartCoroutine(WaitCreateGameObject(cpuUserGameObject, cpuUserData));
             }
             else
             {
@@ -258,6 +260,7 @@ public class StageSampleSceneScript : MonoBehaviour
             {
                 // キャラクターのGameObjectを作成
                 userGameObject = CreateUserCharacterGameObject(userGameObject, userData, userGameObjectName);
+                StartCoroutine(WaitCreateGameObject(userGameObject, userData));
             }
             else
             {
@@ -271,7 +274,7 @@ public class StageSampleSceneScript : MonoBehaviour
                     userData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
                 {
                     userDatasDictionary.Remove(id);
-                    Destroy(userGameObject);
+                    StartCoroutine(WaitDestroyGameObject(userGameObject, userData));
                 }
             }
         }
@@ -368,5 +371,26 @@ public class StageSampleSceneScript : MonoBehaviour
                 0
             );
         }
+    }
+
+    private IEnumerator WaitCreateGameObject(GameObject userGameObject, UserData savedUserData)
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (savedUserData.character == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            UnityChanCharacterScript script = userGameObject.GetComponent<UnityChanCharacterScript>();
+            script.DoOpenMessage();
+        }
+    }
+
+    private IEnumerator WaitDestroyGameObject(GameObject userGameObject, UserData savedUserData)
+    {
+        if (savedUserData.character == UserData.CharacterType.UnityChanCharacter.ToString())
+        {
+            UnityChanCharacterScript script = userGameObject.GetComponent<UnityChanCharacterScript>();
+            script.DoDeadMessage();
+        }
+        yield return new WaitForSeconds(5);
+        Destroy(userGameObject);
     }
 }
