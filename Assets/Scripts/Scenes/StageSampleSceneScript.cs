@@ -77,13 +77,18 @@ public class StageSampleSceneScript : MonoBehaviour
 
             for (int i = 0; i < GameSetting.cpuUserDatas.Length; i++)
             {
+                UserData cpuUserData = GameSetting.cpuUserDatas[i];
                 if (
-                    GameSetting.cpuUserDatas[i].unixTime == userData.unixTime &&
-                    GameSetting.cpuUserDatas[i].playerType == userData.playerType
+                    cpuUserData.unixTime == userData.unixTime &&
+                    cpuUserData.playerType == userData.playerType
                 )
                 {
-                    GameSetting.cpuUserDatas[i] = userData;
-                    GameSetting.cpuUserDatas[i].webSocketStatus = (int)UserData.WebSocketStatus.BATTLE;
+                    cpuUserData = userData;
+                    if (cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.OPEN)
+                    {
+                        cpuUserData.webSocketStatus = (int)UserData.WebSocketStatus.BATTLE;
+                    }
+
                     if (cpuUserDatasDictionary.ContainsKey(userData.id))
                     {
                         // すでにCPUが存在するとき
@@ -212,20 +217,29 @@ public class StageSampleSceneScript : MonoBehaviour
             UserData cpuUserData = cpuUserDatasDictionary[id];
             string cpuUserGameObjectName = $"{cpuUserData.id}_{cpuUserData.name}";
             GameObject cpuUserGameObject = GameObject.Find(cpuUserGameObjectName);
+
             if (
-                GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
-                GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD)
+                (
+                    GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                    GameSetting.selfUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD
+                ) ||
+                (
+                    cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.DIE ||
+                    cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.DEAD
+                )
+            )
             {
-                cpuUserDatasDictionary[id].webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
+                cpuUserData.webSocketStatus = (int)UserData.WebSocketStatus.DEAD;
                 string cpuUserDataJsonString =
-                    JsonUtility.ToJson(cpuUserDatasDictionary[id]);
+                    JsonUtility.ToJson(cpuUserData);
                 ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
+
                 if (cpuUserGameObject)
                 {
-                    StartCoroutine(WaitDestroyGameObject(cpuUserGameObject, cpuUserDatasDictionary[id]));
+                    StartCoroutine(WaitDestroyGameObject(cpuUserGameObject, cpuUserData));
                 }
             }
-            else if (cpuUserGameObject == null && cpuUserData.webSocketStatus != (int)UserData.WebSocketStatus.DEAD)
+            else if (cpuUserGameObject == null && cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
             {
                 // キャラクターのGameObjectを作成
                 cpuUserGameObject = CreateUserCharacterGameObject(cpuUserGameObject, cpuUserData, cpuUserGameObjectName);
@@ -235,10 +249,10 @@ public class StageSampleSceneScript : MonoBehaviour
             {
                 if (cpuUserData.webSocketStatus == (int)UserData.WebSocketStatus.BATTLE)
                 {
-                    UpdateUserData(cpuUserGameObject, cpuUserDatasDictionary[id]);
+                    UpdateUserData(cpuUserGameObject, cpuUserData);
 
                     string cpuUserDataJsonString =
-                        JsonUtility.ToJson(cpuUserDatasDictionary[id]);
+                        JsonUtility.ToJson(cpuUserData);
                     ws.Send(Encoding.UTF8.GetBytes(cpuUserDataJsonString));
                 }
             }

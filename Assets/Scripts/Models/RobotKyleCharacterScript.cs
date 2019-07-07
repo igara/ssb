@@ -157,6 +157,6 @@ public class RobotKyleCharacterScript : MonoBehaviour
     public int GetCpuInputType()
     {
         System.Random random = new System.Random();
-        return random.Next(System.Enum.GetValues(typeof(InputType.KeyType)).Length - 1);
+        return random.Next(System.Enum.GetValues(typeof(InputType.KeyType)).Length);
     }
 }

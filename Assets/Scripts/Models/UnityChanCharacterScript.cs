@@ -7,7 +7,7 @@ public class UnityChanCharacterScript : MonoBehaviour
     public UserData userData;
     private Animator animator;
     private Rigidbody rigidBody;
-    private AudioSource audioSource;
+    private AudioSource inputTypeAudioSource;
     private Vector3 position;
     private bool flying = true;
     public bool dead = false;
@@ -19,7 +19,7 @@ public class UnityChanCharacterScript : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();
+        inputTypeAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -84,6 +84,9 @@ public class UnityChanCharacterScript : MonoBehaviour
         flying = true;
         animator.SetInteger("moveType", (int)InputType.KeyType.up);
         rigidBody.AddForce(Vector3.up * 150);
+        AudioClip audioClip = Resources.Load("Sounds/UnityChan/Jump0001") as AudioClip;
+        inputTypeAudioSource.clip = audioClip;
+        inputTypeAudioSource.Play();
     }
 
     void DoRight()
@@ -116,24 +119,24 @@ public class UnityChanCharacterScript : MonoBehaviour
     private IEnumerator SetAttackFalse()
     {
         yield return new WaitForSeconds(0.5f);
-        AudioClip audioClip = Resources.Load("Sounds/UnityChan/UnityChan0045") as AudioClip;
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        AudioClip audioClip = Resources.Load("Sounds/UnityChan/Attack1102") as AudioClip;
+        inputTypeAudioSource.clip = audioClip;
+        inputTypeAudioSource.Play();
         attack = false;
     }
 
     public void DoOpenMessage()
     {
         AudioClip audioClip = Resources.Load("Sounds/UnityChan/Create0015") as AudioClip;
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        inputTypeAudioSource.clip = audioClip;
+        inputTypeAudioSource.Play();
     }
 
     public void DoDeadMessage()
     {
         AudioClip audioClip = Resources.Load("Sounds/UnityChan/Dead1095") as AudioClip;
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        inputTypeAudioSource.clip = audioClip;
+        inputTypeAudioSource.Play();
     }
 
     void OnCollisionStay(Collision collision)
@@ -176,6 +179,6 @@ public class UnityChanCharacterScript : MonoBehaviour
     public int GetCpuInputType()
     {
         System.Random random = new System.Random();
-        return random.Next(System.Enum.GetValues(typeof(InputType.KeyType)).Length - 1);
+        return random.Next(System.Enum.GetValues(typeof(InputType.KeyType)).Length);
     }
 }
