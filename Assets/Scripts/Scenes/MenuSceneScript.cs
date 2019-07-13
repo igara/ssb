@@ -12,6 +12,8 @@ public class MenuSceneScript : MonoBehaviour
     [SerializeField]
     GameObject vsGameRawImage;
     [SerializeField]
+    GameObject tutorialRawImage;
+    [SerializeField]
     GameObject creditRawImage;
     [SerializeField]
     UnityEngine.UI.Text descriptionText;
@@ -61,6 +63,21 @@ public class MenuSceneScript : MonoBehaviour
     public void OnMouseEnterCreditRawImage()
     {
         descriptionText.text = "クレジット";
+    }
+
+    public void OnMouseExitTutorialRawImage()
+    {
+        descriptionText.text = "";
+    }
+
+    public void OnMouseDownTutorialRawImage()
+    {
+        Link.Move("https://syonet.work/tools/ssb");
+    }
+
+    public void OnMouseEnterTutorialRawImage()
+    {
+        descriptionText.text = "チュートリアル";
     }
 
     public void OnMouseExitCreditRawImage()
